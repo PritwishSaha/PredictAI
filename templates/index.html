@@ -1,0 +1,2090 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#c8202f">
+    <meta name="description"
+        content="PredictAI — Intelligent customer purchase prediction and analytics dashboard.">
+
+    <title>PredictAI | Customer Purchase Intelligence</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Main JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+
+<body>
+
+    <!-- =========================================
+         APPLICATION LOADER
+    ========================================== -->
+
+    <div class="app-loader" id="appLoader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <h2>Predict<span>AI</span></h2>
+            <div class="loader-progress">
+                <div></div>
+            </div>
+
+            <p>Initializing Intelligence...</p>
+        </div>
+    </div>
+
+
+    <!-- =========================================
+         MOBILE OVERLAY
+    ========================================== -->
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+    <!-- =========================================
+         MAIN APPLICATION
+    ========================================== -->
+
+    <div class="app-container">
+
+        <!-- =====================================
+             SIDEBAR
+        ====================================== -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-top">
+
+                <div class="brand">
+                    <div class="brand-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+
+                    <div class="brand-text">
+                        <h2>Predict<span>AI</span></h2>
+                        <small>INTELLIGENCE PLATFORM</small>
+                    </div>
+                </div>
+
+                <button class="sidebar-close" id="sidebarClose"
+                    aria-label="Close sidebar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <!-- Main Navigation -->
+
+            <div class="nav-section">
+
+                <p class="nav-heading">WORKSPACE</p>
+
+                <nav class="sidebar-nav">
+
+                    <a href="#overview" class="nav-link active"
+                        data-section="overview">
+                        <i class="fa-solid fa-grid-2"></i>
+                        <span>Overview</span>
+                    </a>
+
+                    <a href="#prediction" class="nav-link"
+                        data-section="prediction">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Single Prediction</span>
+                        <span class="nav-badge">AI</span>
+                    </a>
+
+                    <a href="#batchPrediction" class="nav-link"
+                        data-section="batchPrediction">
+                        <i class="fa-solid fa-file-csv"></i>
+                        <span>Batch Prediction</span>
+                    </a>
+
+                    <a href="#analytics" class="nav-link"
+                        data-section="analytics">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Analytics</span>
+                    </a>
+
+                    <a href="#history" class="nav-link"
+                        data-section="history">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Prediction History</span>
+                    </a>
+
+                    <a href="#maker" class="nav-link"
+                        data-section="maker">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Makers</span>
+                    </a>
+
+                </nav>
+
+            </div>
+
+
+            <!-- System Navigation -->
+
+            <div class="nav-section">
+
+                <p class="nav-heading">SYSTEM</p>
+
+                <nav class="sidebar-nav">
+
+                    <a href="#modelInformation" class="nav-link"
+                        data-section="modelInformation">
+                        <i class="fa-solid fa-brain"></i>
+                        <span>ML Model</span>
+                    </a>
+
+                    <a href="#systemStatus" class="nav-link"
+                        data-section="systemStatus">
+                        <i class="fa-solid fa-server"></i>
+                        <span>System Status</span>
+                    </a>
+
+                </nav>
+
+            </div>
+
+
+            <!-- Sidebar Bottom -->
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-promo">
+                    <div class="promo-icon">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+
+                    <h4>Smart Decisions</h4>
+
+                    <p>
+                        Use machine learning insights to understand
+                        customer purchasing behaviour.
+                    </p>
+
+                    <a href="#prediction" data-section="prediction">
+                        Start Predicting
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+
+                <div class="sidebar-user">
+
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div class="user-info">
+                        <strong>PredictAI Admin</strong>
+                        <small>Dashboard User</small>
+                    </div>
+
+                    <button class="user-menu-btn" aria-label="User menu">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================
+             MAIN CONTENT
+        ====================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================
+                 TOP HEADER
+            ================================== -->
+
+            <header class="top-header">
+
+                <div class="header-left">
+
+                    <button class="mobile-menu-btn" id="mobileMenuBtn"
+                        aria-label="Open navigation">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+                    <div class="breadcrumb">
+                        <span>Workspace</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <strong id="currentPageTitle">Overview</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="header-right">
+
+                    <div class="header-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span id="currentDate">Loading date...</span>
+                    </div>
+
+                    <button class="icon-button" id="refreshDashboard"
+                        title="Refresh dashboard">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+
+                    <div class="header-status">
+                        <span class="status-dot" id="headerStatusDot"></span>
+                        <span id="headerStatusText">Connecting...</span>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================
+                 CONTENT WRAPPER
+            ================================== -->
+
+            <div class="content-wrapper">
+
+
+                <!-- =================================
+                     OVERVIEW SECTION
+                ================================== -->
+
+                <section class="dashboard-section active" id="overview">
+
+                    <!-- Welcome Banner -->
+
+                    <div class="welcome-banner">
+
+                        <div class="welcome-content">
+
+                            <div class="welcome-tag">
+                                <span class="welcome-tag-dot"></span>
+                                MACHINE LEARNING DASHBOARD
+                            </div>
+
+                            <h1>
+                                Understand Your
+                                <span>Customers.</span>
+                            </h1>
+
+                            <p>
+                                Predict customer purchase behaviour,
+                                explore business analytics and make
+                                smarter data-driven decisions.
+                            </p>
+
+                            <div class="welcome-actions">
+
+                                <a href="#prediction" class="primary-button"
+                                    data-section="prediction">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                    Generate Prediction
+                                </a>
+
+                                <a href="#analytics" class="secondary-button"
+                                    data-section="analytics">
+                                    <i class="fa-solid fa-chart-column"></i>
+                                    Explore Analytics
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="welcome-visual">
+
+                            <div class="visual-circle circle-one"></div>
+                            <div class="visual-circle circle-two"></div>
+
+                            <div class="visual-card visual-card-main">
+
+                                <div class="visual-card-icon">
+                                    <i class="fa-solid fa-brain"></i>
+                                </div>
+
+                                <span>AI Prediction Engine</span>
+
+                                <h3>Smart Insights</h3>
+
+                                <div class="visual-chart">
+                                    <span style="height: 35%"></span>
+                                    <span style="height: 55%"></span>
+                                    <span style="height: 42%"></span>
+                                    <span style="height: 75%"></span>
+                                    <span style="height: 60%"></span>
+                                    <span style="height: 90%"></span>
+                                    <span style="height: 72%"></span>
+                                </div>
+
+                                <small>
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Machine learning enabled
+                                </small>
+
+                            </div>
+
+                            <div class="floating-stat floating-stat-top">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                <div>
+                                    <strong>Real-time</strong>
+                                    <small>Predictions</small>
+                                </div>
+                            </div>
+
+                            <div class="floating-stat floating-stat-bottom">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <div>
+                                    <strong>Random Forest</strong>
+                                    <small>ML Algorithm</small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- KPI SECTION -->
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-eyebrow">PERFORMANCE OVERVIEW</span>
+                            <h2>Dashboard Insights</h2>
+                            <p>Your customer prediction activity at a glance.</p>
+                        </div>
+
+                        <div class="live-indicator">
+                            <span></span>
+                            LIVE DATA
+                        </div>
+
+                    </div>
+
+
+                    <div class="stats-grid">
+
+
+                        <!-- Total Predictions -->
+
+                        <div class="stat-card stat-red">
+
+                            <div class="stat-top">
+                                <div class="stat-icon">
+                                    <i class="fa-solid fa-chart-simple"></i>
+                                </div>
+
+                                <span class="stat-label">TOTAL PREDICTIONS</span>
+                            </div>
+
+                            <h3 id="totalPredictions">0</h3>
+
+                            <div class="stat-bottom">
+                                <span>All-time predictions</span>
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Will Buy -->
+
+                        <div class="stat-card stat-green">
+
+                            <div class="stat-top">
+                                <div class="stat-icon">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </div>
+
+                                <span class="stat-label">LIKELY TO BUY</span>
+                            </div>
+
+                            <h3 id="willBuyCount">0</h3>
+
+                            <div class="stat-bottom">
+                                <span>Positive predictions</span>
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Will Not Buy -->
+
+                        <div class="stat-card stat-orange">
+
+                            <div class="stat-top">
+                                <div class="stat-icon">
+                                    <i class="fa-solid fa-cart-arrow-down"></i>
+                                </div>
+
+                                <span class="stat-label">UNLIKELY TO BUY</span>
+                            </div>
+
+                            <h3 id="willNotBuyCount">0</h3>
+
+                            <div class="stat-bottom">
+                                <span>Negative predictions</span>
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Purchase Rate -->
+
+                        <div class="stat-card stat-purple">
+
+                            <div class="stat-top">
+                                <div class="stat-icon">
+                                    <i class="fa-solid fa-percent"></i>
+                                </div>
+
+                                <span class="stat-label">PURCHASE RATE</span>
+                            </div>
+
+                            <h3 id="purchaseRate">0%</h3>
+
+                            <div class="stat-bottom">
+                                <span>Predicted purchase ratio</span>
+                                <i class="fa-solid fa-bullseye"></i>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         OVERVIEW ANALYTICS
+                    ================================== -->
+
+                    <div class="overview-grid">
+
+
+                        <!-- Purchase Distribution -->
+
+                        <div class="panel chart-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-eyebrow">CUSTOMER BEHAVIOUR</span>
+                                    <h3>Purchase Distribution</h3>
+                                    <p>Predicted purchase outcomes.</p>
+                                </div>
+
+                                <div class="panel-icon">
+                                    <i class="fa-solid fa-chart-pie"></i>
+                                </div>
+
+                            </div>
+
+                            <div class="chart-container chart-doughnut">
+                                <canvas id="purchaseDistributionChart"></canvas>
+                            </div>
+
+                            <div class="chart-legend">
+
+                                <div>
+                                    <span class="legend-dot legend-red"></span>
+                                    <span>Will Buy</span>
+                                    <strong id="buyChartValue">0</strong>
+                                </div>
+
+                                <div>
+                                    <span class="legend-dot legend-gray"></span>
+                                    <span>Will Not Buy</span>
+                                    <strong id="notBuyChartValue">0</strong>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Probability Chart -->
+
+                        <div class="panel chart-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-eyebrow">PREDICTION ANALYSIS</span>
+                                    <h3>Average Purchase Probability</h3>
+                                    <p>Average probability across saved predictions.</p>
+                                </div>
+
+                                <div class="panel-icon">
+                                    <i class="fa-solid fa-wave-square"></i>
+                                </div>
+
+                            </div>
+
+                            <div class="probability-summary">
+
+                                <div>
+                                    <h2 id="averageProbability">0%</h2>
+                                    <span>Average probability</span>
+                                </div>
+
+                                <div class="probability-icon">
+                                    <i class="fa-solid fa-bullseye"></i>
+                                </div>
+
+                            </div>
+
+                            <div class="probability-track">
+                                <div class="probability-track-fill"
+                                    id="averageProbabilityBar"></div>
+                            </div>
+
+                            <div class="probability-scale">
+                                <span>0%</span>
+                                <span>50%</span>
+                                <span>100%</span>
+                            </div>
+
+                            <div class="probability-note">
+                                <i class="fa-solid fa-circle-info"></i>
+                                Based on historical model predictions.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Recent Predictions -->
+
+                    <div class="panel recent-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="panel-eyebrow">LATEST ACTIVITY</span>
+                                <h3>Recent Predictions</h3>
+                                <p>Your latest saved customer predictions.</p>
+                            </div>
+
+                            <a href="#history" class="text-link">
+                                View All
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+
+                        </div>
+
+
+                        <div class="table-wrapper">
+
+                            <table class="data-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>CUSTOMER AGE</th>
+                                        <th>ANNUAL INCOME</th>
+                                        <th>PREDICTION</th>
+                                        <th>PROBABILITY</th>
+                                        <th>DATE</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="recentPredictionsBody">
+
+                                    <tr>
+                                        <td colspan="6" class="empty-state">
+                                            <i class="fa-solid fa-database"></i>
+                                            <span>Loading recent predictions...</span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     SINGLE PREDICTION SECTION
+                ================================== -->
+
+                <section class="dashboard-section" id="prediction">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-eyebrow">MACHINE LEARNING ENGINE</span>
+                            <h2>Customer Purchase Prediction</h2>
+                            <p>Enter customer information to generate a purchase prediction.</p>
+                        </div>
+
+                        <div class="model-chip">
+                            <i class="fa-solid fa-brain"></i>
+                            <span id="predictionModelName">Random Forest</span>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="prediction-layout">
+
+
+                        <!-- Prediction Form -->
+
+                        <div class="panel prediction-form-panel">
+
+                            <div class="form-panel-heading">
+
+                                <div class="form-heading-icon">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+
+                                <div>
+                                    <h3>Customer Information</h3>
+                                    <p>Provide the customer's details below.</p>
+                                </div>
+
+                            </div>
+
+
+                            <form id="predictionForm" autocomplete="off">
+
+                                <div class="form-section-title">
+                                    <span>01</span>
+                                    PERSONAL INFORMATION
+                                </div>
+
+
+                                <div class="form-grid">
+
+                                    <div class="form-group">
+
+                                        <label for="Age">
+                                            Customer Age
+                                            <span>*</span>
+                                        </label>
+
+                                        <div class="input-wrapper">
+                                            <i class="fa-solid fa-user"></i>
+
+                                            <input
+                                                type="number"
+                                                id="Age"
+                                                name="Age"
+                                                placeholder="Enter age"
+                                                min="1"
+                                                max="120"
+                                                required>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="Gender">
+                                            Gender
+                                            <span>*</span>
+                                        </label>
+
+                                        <div class="input-wrapper">
+                                            <i class="fa-solid fa-venus-mars"></i>
+
+                                            <select id="Gender" name="Gender" required>
+                                                <option value="">Select gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="form-section-title">
+                                    <span>02</span>
+                                    FINANCIAL INFORMATION
+                                </div>
+
+
+                                <div class="form-grid">
+
+                                    <div class="form-group">
+
+                                        <label for="AnnualIncome">
+                                            Annual Income
+                                            <span>*</span>
+                                        </label>
+
+                                        <div class="input-wrapper">
+                                            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                                            <input
+                                                type="number"
+                                                id="AnnualIncome"
+                                                name="AnnualIncome"
+                                                placeholder="e.g. 75000"
+                                                min="0"
+                                                step="any"
+                                                required>
+                                        </div>
+
+                                        <small>Enter annual income in your dataset's unit.</small>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="DiscountsAvailed">
+                                            Discounts Availed
+                                            <span>*</span>
+                                        </label>
+
+                                        <div class="input-wrapper">
+                                            <i class="fa-solid fa-tags"></i>
+
+                                            <input
+                                                type="number"
+                                                id="DiscountsAvailed"
+                                                name="DiscountsAvailed"
+                                                placeholder="Number of discounts"
+                                                min="0"
+                                                step="1"
+                                                required>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="form-section-title">
+                                    <span>03</span>
+                                    PURCHASE BEHAVIOUR
+                                </div>
+
+
+                                <div class="form-grid">
+
+                                    <div class="form-group">
+
+                                        <label for="NumberOfPurchases">
+                                            Previous Purchases
+                                            <span>*</span>
+                                        </label>
+
+                                        <div class="input-wrapper">
+                                            <i class="fa-solid fa-bag-shopping"></i>
+
+                                            <input
+                                                type="number"
+                                                id="NumberOfPurchases"
+                                                name="NumberOfPurchases"
+                                                placeholder="Number of purchases"
+                                                min="0"
+                                                step="1"
+                                                required>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="ProductCategory">
+                                            Product Category
+                                            <span>*</span>
+                                        </label>
+
+                                        <div class="input-wrapper">
+                                            <i class="fa-solid fa-box"></i>
+
+                                            <select
+                                                id="ProductCategory"
+                                                name="ProductCategory"
+                                                required>
+
+                                                <option value="">Select category</option>
+                                                <option value="Electronics">Electronics</option>
+                                                <option value="Clothing">Clothing</option>
+                                                <option value="Food">Food</option>
+                                                <option value="Home">Home</option>
+                                                <option value="Sports">Sports</option>
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="TimeSpentOnWebsite">
+                                            Website Time (Minutes)
+                                            <span>*</span>
+                                        </label>
+
+                                        <div class="input-wrapper">
+                                            <i class="fa-solid fa-globe"></i>
+
+                                            <input
+                                                type="number"
+                                                id="TimeSpentOnWebsite"
+                                                name="TimeSpentOnWebsite"
+                                                placeholder="Time in minutes"
+                                                min="0"
+                                                step="any"
+                                                required>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="LoyaltyProgram">
+                                            Loyalty Program
+                                            <span>*</span>
+                                        </label>
+
+                                        <div class="input-wrapper">
+                                            <i class="fa-solid fa-award"></i>
+
+                                            <select
+                                                id="LoyaltyProgram"
+                                                name="LoyaltyProgram"
+                                                required>
+
+                                                <option value="">Select option</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="form-message" id="formMessage"
+                                    role="status" aria-live="polite"></div>
+
+
+
+                                <div class="form-actions">
+
+                                    <button type="reset" class="reset-form-button">
+                                        <i class="fa-solid fa-rotate-left"></i>
+                                        Reset Form
+                                    </button>
+
+                                    <button type="submit" class="submit-button">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                        Predict Purchase
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+
+
+                        <!-- Prediction Result -->
+
+                        <div class="prediction-result-column">
+
+                            <div class="panel result-placeholder" id="predictionResult">
+
+                                <div class="result-placeholder-icon">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                </div>
+
+                                <h3>Prediction Results</h3>
+
+                                <p>
+                                    Your prediction results will appear here
+                                    after you submit customer information.
+                                </p>
+
+                                <div class="placeholder-divider"></div>
+
+                                <div class="result-feature">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>Purchase likelihood</span>
+                                </div>
+
+                                <div class="result-feature">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>Probability score</span>
+                                </div>
+
+                                <div class="result-feature">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>Prediction reference ID</span>
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- Model Information -->
+
+                            <div class="panel mini-model-panel">
+
+                                <div class="mini-model-header">
+                                    <div class="mini-model-icon">
+                                        <i class="fa-solid fa-brain"></i>
+                                    </div>
+
+                                    <div>
+                                        <h4>Prediction Engine</h4>
+                                        <span>Machine Learning Model</span>
+                                    </div>
+                                </div>
+
+                                <div class="mini-model-row">
+                                    <span>Algorithm</span>
+                                    <strong id="miniModelName">Random Forest</strong>
+                                </div>
+
+                                <div class="mini-model-row">
+                                    <span>Decision Threshold</span>
+                                    <strong id="modelThreshold">50%</strong>
+                                </div>
+
+                                <div class="mini-model-row">
+                                    <span>Model Status</span>
+                                    <strong class="text-success" id="miniModelStatus">
+                                        Checking...
+                                    </strong>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     BATCH PREDICTION SECTION
+                ================================== -->
+
+                <section class="dashboard-section" id="batchPrediction">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-eyebrow">BULK PROCESSING</span>
+                            <h2>Batch Customer Prediction</h2>
+                            <p>Upload a CSV file to predict purchase behaviour for multiple customers.</p>
+                        </div>
+
+                        <div class="batch-chip">
+                            <i class="fa-solid fa-file-csv"></i>
+                            CSV SUPPORTED
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="panel batch-panel">
+
+                        <div class="batch-intro">
+
+                            <div class="batch-intro-icon">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+
+                            <div>
+                                <h3>Upload Customer Dataset</h3>
+
+                                <p>
+                                    Upload your customer CSV dataset.
+                                    Each valid row will be processed by the trained model.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <form id="batchPredictionForm"
+                            enctype="multipart/form-data">
+
+                            <label class="upload-area" for="batchFile">
+
+                                <div class="upload-icon">
+                                    <i class="fa-solid fa-file-arrow-up"></i>
+                                </div>
+
+                                <h3>Drop your CSV file here</h3>
+
+                                <p>or <span>browse files</span> from your computer</p>
+
+                                <small>CSV format · Maximum file size 10 MB</small>
+
+                                <input
+                                    type="file"
+                                    id="batchFile"
+                                    name="file"
+                                    accept=".csv,text/csv"
+                                    required>
+
+                                <div class="selected-file" id="selectedFile">
+                                    <i class="fa-solid fa-file-csv"></i>
+                                    <span id="selectedFileName">No file selected</span>
+                                </div>
+
+                            </label>
+
+
+                            <div class="batch-requirements">
+
+                                <div>
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    <strong>Required CSV columns</strong>
+                                </div>
+
+                                <div class="required-column-list">
+                                    <span>Age</span>
+                                    <span>Gender</span>
+                                    <span>AnnualIncome</span>
+                                    <span>NumberOfPurchases</span>
+                                    <span>ProductCategory</span>
+                                    <span>TimeSpentOnWebsite</span>
+                                    <span>LoyaltyProgram</span>
+                                    <span>DiscountsAvailed</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="batch-actions">
+
+                                <button type="button" class="download-template-button"
+                                    id="downloadTemplate">
+                                    <i class="fa-solid fa-download"></i>
+                                    Download CSV Template
+                                </button>
+
+                                <button type="submit" class="submit-button"
+                                    id="batchSubmitButton">
+                                    <i class="fa-solid fa-bolt"></i>
+                                    Start Batch Prediction
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+
+                    <!-- Batch Results -->
+
+                    <div class="batch-results" id="batchResults" hidden>
+
+                        <div class="section-heading">
+
+                            <div>
+                                <span class="section-eyebrow">PROCESSING REPORT</span>
+                                <h2>Batch Results</h2>
+                                <p>Summary of the uploaded customer dataset.</p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="batch-stats-grid">
+
+                            <div class="batch-stat-card">
+                                <span>Total Rows</span>
+                                <h3 id="batchTotal">0</h3>
+                            </div>
+
+                            <div class="batch-stat-card batch-success">
+                                <span>Successfully Processed</span>
+                                <h3 id="batchSuccessful">0</h3>
+                            </div>
+
+                            <div class="batch-stat-card batch-failed">
+                                <span>Failed</span>
+                                <h3 id="batchFailed">0</h3>
+                            </div>
+
+                            <div class="batch-stat-card">
+                                <span>Will Buy</span>
+                                <h3 id="batchWillBuy">0</h3>
+                            </div>
+
+                        </div>
+
+
+                        <div class="panel">
+
+                            <div class="panel-header">
+                                <div>
+                                    <h3>Individual Row Results</h3>
+                                    <p>Prediction output for every uploaded row.</p>
+                                </div>
+                            </div>
+
+
+                            <div class="table-wrapper">
+
+                                <table class="data-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th>ROW</th>
+                                            <th>PREDICTION ID</th>
+                                            <th>PREDICTION</th>
+                                            <th>PROBABILITY</th>
+                                            <th>STATUS</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="batchResultsBody">
+                                        <tr>
+                                            <td colspan="5" class="empty-state">
+                                                No batch results available.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     ANALYTICS SECTION
+                ================================== -->
+
+                <section class="dashboard-section" id="analytics">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-eyebrow">DATA INTELLIGENCE</span>
+                            <h2>Prediction Analytics</h2>
+                            <p>Explore statistical insights from your saved prediction records.</p>
+                        </div>
+
+                        <button class="outline-button" id="refreshAnalytics">
+                            <i class="fa-solid fa-rotate"></i>
+                            Refresh Analytics
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="analytics-highlight-grid">
+
+                        <div class="analytics-highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+                            <span>Total Records</span>
+                            <h3 id="analyticsTotal">0</h3>
+                            <small>Stored prediction records</small>
+                        </div>
+
+
+                        <div class="analytics-highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fa-solid fa-bag-shopping"></i>
+                            </div>
+                            <span>Purchase Predictions</span>
+                            <h3 id="analyticsBuy">0</h3>
+                            <small>Customers likely to purchase</small>
+                        </div>
+
+
+                        <div class="analytics-highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <span>Purchase Rate</span>
+                            <h3 id="analyticsPurchaseRate">0%</h3>
+                            <small>Predicted purchase percentage</small>
+                        </div>
+
+
+                        <div class="analytics-highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fa-solid fa-bullseye"></i>
+                            </div>
+                            <span>Average Probability</span>
+                            <h3 id="analyticsAverageProbability">0%</h3>
+                            <small>Average model output</small>
+                        </div>
+
+                        <div class="analytics-highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <span>Non-Purchases</span>
+                            <h3 id="analyticsNotBuy">0</h3>
+                            <small>Customers unlikely to purchase</small>
+                        </div>
+
+                        <div class="analytics-highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fa-solid fa-box-open"></i>
+                            </div>
+                            <span>Top Category</span>
+                            <h3 id="analyticsTopCategory">-</h3>
+                            <small>Highest purchase category</small>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="analytics-chart-grid">
+
+
+                        <!-- Purchase Comparison -->
+
+                        <div class="panel analytics-chart-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-eyebrow">OUTCOME COMPARISON</span>
+                                    <h3>Purchase vs Non-Purchase</h3>
+                                    <p>Distribution of predicted customer outcomes.</p>
+                                </div>
+
+                            </div>
+
+                            <div class="chart-container">
+                                <canvas id="purchaseComparisonChart"></canvas>
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Probability Overview -->
+
+                        <div class="panel analytics-chart-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-eyebrow">MODEL OUTPUT</span>
+                                    <h3>Predictions by Probability</h3>
+                                    <p>Saved predictions grouped by purchase probability.</p>
+                                </div>
+
+                            </div>
+
+                            <div class="chart-container">
+                                <canvas id="probabilityChart"></canvas>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Product Category Analysis -->
+
+                        <div class="panel analytics-chart-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-eyebrow">CATEGORY ANALYSIS</span>
+                                    <h3>Purchases by Category</h3>
+                                    <p>Purchase distribution across product categories.</p>
+                                </div>
+
+                            </div>
+
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Loyalty Program Analysis -->
+
+                        <div class="panel analytics-chart-panel">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-eyebrow">LOYALTY IMPACT</span>
+                                    <h3>Loyalty Program Impact</h3>
+                                    <p>Predicted purchases and non-purchases by loyalty status.</p>
+                                </div>
+
+                            </div>
+
+                            <div class="chart-container">
+                                <canvas id="loyaltyChart"></canvas>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Daily Activity -->
+
+                        <div class="panel analytics-chart-panel full-width">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="panel-eyebrow">ACTIVITY TREND</span>
+                                    <h3>Daily Prediction Activity</h3>
+                                    <p>Prediction volume over the last 7 days.</p>
+                                </div>
+
+                            </div>
+
+                            <div class="chart-container">
+                                <canvas id="dailyActivityChart"></canvas>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="analytics-insight-box">
+
+                        <div class="insight-icon">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+
+                        <div>
+                            <h3>Analytics Interpretation</h3>
+                            <p id="analyticsInsight">
+                                Analytics insights will be generated after prediction records
+                                become available.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     HISTORY SECTION
+                ================================== -->
+
+                <section class="dashboard-section" id="history">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-eyebrow">RECORD MANAGEMENT</span>
+                            <h2>Prediction History</h2>
+                            <p>Search, filter and export previously generated predictions.</p>
+                        </div>
+
+                        <a href="/api/history/export"
+                            class="outline-button export-button">
+                            <i class="fa-solid fa-file-export"></i>
+                            Export CSV
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="panel history-panel">
+
+                        <div class="history-toolbar">
+
+                            <div class="history-search">
+
+                                <i class="fa-solid fa-magnifying-glass"></i>
+
+                                <input
+                                    type="search"
+                                    id="historySearch"
+                                    placeholder="Search customer records..."
+                                    autocomplete="off">
+
+                            </div>
+
+
+                            <div class="history-filters">
+
+                                <label for="historyFilter">Filter:</label>
+
+                                <select id="historyFilter">
+                                    <option value="all">All Predictions</option>
+                                    <option value="buy">Will Buy</option>
+                                    <option value="not_buy">Will Not Buy</option>
+                                </select>
+
+                                <button class="icon-button" id="refreshHistory"
+                                    title="Refresh history">
+                                    <i class="fa-solid fa-rotate"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="table-wrapper">
+
+                            <table class="data-table history-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>CUSTOMER</th>
+                                        <th>AGE</th>
+                                        <th>INCOME</th>
+                                        <th>PREDICTION</th>
+                                        <th>PROBABILITY</th>
+                                        <th>DATE</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+
+
+                                <tbody id="historyTableBody">
+
+                                    <tr>
+                                        <td colspan="8" class="empty-state">
+                                            <i class="fa-solid fa-clock"></i>
+                                            <span>Loading prediction history...</span>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+
+                        <div class="history-footer">
+
+                            <span id="historyRecordCount">
+                                Showing 0 records
+                            </span>
+
+                            <button class="text-link" id="historyLoadMore"
+                                type="button" hidden>
+                                Load More
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     MAKER SECTION
+                ================================== -->
+
+                <section class="dashboard-section" id="maker">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-eyebrow">TEAM</span>
+                            <h2>Project Makers</h2>
+                            <p>The brilliant minds behind this AI-powered prediction system.</p>
+                        </div>
+
+                        <div class="model-chip">
+                            <i class="fa-solid fa-users"></i>
+                            <span>3 Members</span>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="maker-grid">
+
+                        <!-- Pritwish Saha -->
+
+                        <div class="maker-card">
+
+                            <div class="maker-avatar">
+                                <img
+                                    src="{{ url_for('static', filename='images/pritwish1.jpeg') }}"
+                                    alt="Pritwish Saha"
+                                    loading="lazy">
+                            </div>
+
+                            <div class="maker-info">
+
+                                <h3>Pritwish Saha</h3>
+
+                                <div class="maker-code">
+                                    <i class="fa-solid fa-id-card"></i>
+                                    <span>BWU/BTA/24/416</span>
+                                </div>
+
+                                <div class="maker-role">
+                                    <span>Team Member</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Souhardya Dey -->
+
+                        <div class="maker-card">
+
+                            <div class="maker-avatar">
+                                <img
+                                    src="{{ url_for('static', filename='images/souhardya.jpeg') }}"
+                                    alt="Souhardya Dey"
+                                    loading="lazy">
+                            </div>
+
+                            <div class="maker-info">
+
+                                <h3>Souhardya Dey</h3>
+
+                                <div class="maker-code">
+                                    <i class="fa-solid fa-id-card"></i>
+                                    <span>BWU/BTA/24/392</span>
+                                </div>
+
+                                <div class="maker-role">
+                                    <span>Team Member</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Asif Dhabak -->
+
+                        <div class="maker-card">
+
+                            <div class="maker-avatar">
+                                <img
+                                    src="{{ url_for('static', filename='images/asif.jpeg') }}"
+                                    alt="Asif Dhabak"
+                                    loading="lazy">
+                            </div>
+
+                            <div class="maker-info">
+
+                                <h3>Asif Dhabak</h3>
+
+                                <div class="maker-code">
+                                    <i class="fa-solid fa-id-card"></i>
+                                    <span>BWU/BTA/24/391</span>
+                                </div>
+
+                                <div class="maker-role">
+                                    <span>Team Member</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     MODEL INFORMATION
+                ================================== -->
+
+                <section class="dashboard-section" id="modelInformation">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-eyebrow">MACHINE LEARNING</span>
+                            <h2>Model Performance</h2>
+                            <p>Performance metrics reported by your trained model.</p>
+                        </div>
+
+                        <div class="model-chip">
+                            <i class="fa-solid fa-brain"></i>
+                            <span id="modelAlgorithm">Random Forest</span>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="model-overview-card">
+
+                        <div class="model-overview-left">
+
+                            <div class="model-large-icon">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+
+                            <span class="model-label">CLASSIFICATION ALGORITHM</span>
+
+                            <h2 id="modelDisplayName">Random Forest Classifier</h2>
+
+                            <p>
+                                An ensemble learning algorithm that combines
+                                multiple decision trees to classify customer
+                                purchase behaviour.
+                            </p>
+
+                            <div class="model-tags">
+                                <span>Supervised Learning</span>
+                                <span>Classification</span>
+                                <span>Ensemble Method</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="model-overview-right">
+
+                            <div class="model-detail">
+                                <span>Decision Threshold</span>
+                                <strong id="displayThreshold">50%</strong>
+                            </div>
+
+                            <div class="model-detail">
+                                <span>Prediction Method</span>
+                                <strong>Probability Based</strong>
+                            </div>
+
+                            <div class="model-detail">
+                                <span>Input Features</span>
+                                <strong>8 Features</strong>
+                            </div>
+
+                            <div class="model-detail">
+                                <span>Model Status</span>
+                                <strong id="displayModelStatus">Checking...</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Performance Metrics -->
+
+                    <div class="section-heading compact-heading">
+
+                        <div>
+                            <h3>Evaluation Metrics</h3>
+                            <p>Metrics from the saved training artifact.</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="model-metrics-grid">
+
+                        <div class="model-metric-card">
+                            <span>Accuracy</span>
+                            <h3 id="modelAccuracy">N/A</h3>
+                            <small>Overall correct predictions</small>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-bullseye"></i>
+                            </div>
+                        </div>
+
+
+                        <div class="model-metric-card">
+                            <span>Precision</span>
+                            <h3 id="modelPrecision">N/A</h3>
+                            <small>Positive prediction quality</small>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-crosshairs"></i>
+                            </div>
+                        </div>
+
+
+                        <div class="model-metric-card">
+                            <span>Recall</span>
+                            <h3 id="modelRecall">N/A</h3>
+                            <small>Actual positives identified</small>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                            </div>
+                        </div>
+
+
+                        <div class="model-metric-card">
+                            <span>F1 Score</span>
+                            <h3 id="modelF1">N/A</h3>
+                            <small>Precision and recall balance</small>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                            </div>
+                        </div>
+
+
+                        <div class="model-metric-card">
+                            <span>ROC-AUC</span>
+                            <h3 id="modelRocAuc">N/A</h3>
+                            <small>Classification ranking ability</small>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-chart-area"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="model-note">
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <p>
+                            These evaluation metrics are taken from the model
+                            training artifact. They are not calculated from
+                            the saved customer prediction history.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     SYSTEM STATUS
+                ================================== -->
+
+                <section class="dashboard-section" id="systemStatus">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span class="section-eyebrow">INFRASTRUCTURE</span>
+                            <h2>System Health</h2>
+                            <p>Monitor the availability of your prediction services.</p>
+                        </div>
+
+                        <button class="outline-button" id="checkSystemHealth">
+                            <i class="fa-solid fa-rotate"></i>
+                            Check Status
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="system-status-grid">
+
+
+                        <div class="panel system-status-card">
+
+                            <div class="system-status-icon">
+                                <i class="fa-solid fa-server"></i>
+                            </div>
+
+                            <div>
+                                <span>Flask API</span>
+                                <h3 id="apiStatus">Checking...</h3>
+                                <small>Backend service availability</small>
+                            </div>
+
+                            <span class="system-status-indicator"
+                                id="apiStatusIndicator"></span>
+
+                        </div>
+
+
+                        <div class="panel system-status-card">
+
+                            <div class="system-status-icon">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+
+                            <div>
+                                <span>ML Model</span>
+                                <h3 id="modelStatus">Checking...</h3>
+                                <small>Trained model availability</small>
+                            </div>
+
+                            <span class="system-status-indicator"
+                                id="modelStatusIndicator"></span>
+
+                        </div>
+
+
+                        <div class="panel system-status-card">
+
+                            <div class="system-status-icon">
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+
+                            <div>
+                                <span>SQLite Database</span>
+                                <h3 id="dbStatus">Checking...</h3>
+                                <small>Database connectivity</small>
+                            </div>
+
+                            <span class="system-status-indicator"
+                                id="dbStatusIndicator"></span>
+
+                        </div>
+
+
+                        <div class="panel system-status-card">
+
+                            <div class="system-status-icon">
+                                <i class="fa-solid fa-gears"></i>
+                            </div>
+
+                            <div>
+                                <span>Prediction Service</span>
+                                <h3 id="serviceStatus">Checking...</h3>
+                                <small>Application readiness</small>
+                            </div>
+
+                            <span class="system-status-indicator"
+                                id="serviceStatusIndicator"></span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="panel system-info-panel">
+
+                        <div class="panel-header">
+                            <div>
+                                <h3>Application Information</h3>
+                                <p>Technical information about the platform.</p>
+                            </div>
+                        </div>
+
+                        <div class="system-info-grid">
+
+                            <div>
+                                <span>Application</span>
+                                <strong>PredictAI</strong>
+                            </div>
+
+                            <div>
+                                <span>Backend Framework</span>
+                                <strong>Python Flask</strong>
+                            </div>
+
+                            <div>
+                                <span>Database</span>
+                                <strong>SQLite</strong>
+                            </div>
+
+                            <div>
+                                <span>ML Library</span>
+                                <strong>Scikit-learn</strong>
+                            </div>
+
+                            <div>
+                                <span>Data Processing</span>
+                                <strong>Pandas / NumPy</strong>
+                            </div>
+
+                            <div>
+                                <span>Model Storage</span>
+                                <strong>Joblib</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     FOOTER
+                ================================== -->
+
+                <footer class="app-footer">
+
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+
+                        <div>
+                            <strong>PredictAI</strong>
+                            <small>Customer Purchase Intelligence</small>
+                        </div>
+                    </div>
+
+
+                    <p>
+                        Powered by Machine Learning
+                        <span>•</span>
+                        Built with Python & Flask
+                    </p>
+
+
+                    <span class="footer-copyright">
+                        © <span id="currentYear"></span> PredictAI
+                    </span>
+
+                </footer>
+
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NOTIFICATION CONTAINER
+    ========================================== -->
+
+    <div class="app-notification" id="appNotification"
+        role="status" aria-live="polite"></div>
+
+
+
+    <!-- =========================================
+         HISTORY DETAIL MODAL
+    ========================================== -->
+
+    <div class="modal-overlay" id="historyModal">
+
+        <div class="modal-container">
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-eyebrow">PREDICTION DETAILS</span>
+                    <h3>Customer Record</h3>
+                </div>
+
+                <button class="modal-close" id="closeHistoryModal"
+                    aria-label="Close modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <div class="modal-body" id="historyModalBody">
+                <p>Loading record details...</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         LOADING OVERLAY
+    ========================================== -->
+
+    <div class="loading-overlay" id="loadingOverlay">
+
+        <div class="loading-card">
+
+            <div class="loading-spinner"></div>
+
+            <h3>Processing Prediction</h3>
+
+            <p>Analyzing customer information with the ML model...</p>
+
+        </div>
+
+    </div>
+
+
+</body>
+</html>
